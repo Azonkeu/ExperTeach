@@ -1,13 +1,52 @@
 import { Routes, Route } from 'react-router-dom'
+import ProtectedRoute from './components/ProtectedRoute'
+import Home from './pagess/Home'
+import Login from './pagess/Login'
+import StudentDashboard from './pagess/StudentDashboard'
+import TeacherDashboard from './pagess/TeacherDashboard'
+import AdminDashboard from './pagess/AdminDashboard'
+import Classroom from './pagess/Classroom'
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<h1>Home</h1>} />
-      <Route path="/studentArea" element={<h1>Student Dashboard</h1>} />
-      <Route path="/teacherArea" element={<h1>Teacher Dashboard</h1>} />
-      <Route path="/adminArea" element={<h1>Admin Dashboard</h1>} />
-      <Route path="/classroom/:lessonId" element={<h1>Classroom</h1>} />
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route
+  path="/studentArea"
+  element={
+    <ProtectedRoute allowedRoles={['student']}>
+      <StudentDashboard />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/teacherArea"
+  element={
+    <ProtectedRoute allowedRoles={['teacher']}>
+      <TeacherDashboard />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/adminArea"
+  element={
+    <ProtectedRoute allowedRoles={['admin']}>
+      <AdminDashboard />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/classroom/:lessonId"
+  element={
+    <ProtectedRoute allowedRoles={['student', 'teacher', 'admin']}>
+      <Classroom />
+    </ProtectedRoute>
+  }
+/>
     </Routes>
   )
 }
